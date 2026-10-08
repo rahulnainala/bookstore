@@ -27,7 +27,7 @@ If the service isn't called `bookstore-api`, update the URL in `vercel.json`.
 
 ## Web
 
-Import the repo in Vercel and keep the default root directory. `vercel.json` in the repo root sets the install and build commands and the output folder.
+Import the repo in Vercel and keep the default root directory. `vercel.json` in the repo root declares the website (`apps/web`) as the only Vercel service; the API stays on Render.
 
 For the custom domain, add `bookstore.rahulnainala.com` in the Vercel project and create a `CNAME bookstore -> cname.vercel-dns.com` record.
 
