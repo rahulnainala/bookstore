@@ -26,10 +26,7 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-/**
- * One cart API for the whole app. Guests get a localStorage cart; signed-in users get the server
- * cart. When a guest signs in, their local cart is merged into the server cart.
- */
+// Guests get a localStorage cart, logged in users get the server one.
 export function CartProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -43,8 +40,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     enabled: !!user,
   });
 
-  // When a guest signs in, merge their local cart into the account. Until that settles the cart
-  // counts as loading, so pages like checkout don't act on a half-merged (empty) cart.
+  // merge the guest cart on login. report loading until it's done, otherwise checkout sees an
+  // empty cart for a moment and redirects
   const [mergeFailedFor, setMergeFailedFor] = useState<number | null>(null);
   const merging = useRef(false);
   const mergePending = !!user && guestItems.length > 0 && mergeFailedFor !== user.id;

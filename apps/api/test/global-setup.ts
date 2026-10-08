@@ -1,4 +1,3 @@
-/** Migrate and seed the test database once before the suite runs. */
 export default async function setup() {
   process.env.NODE_ENV = "test";
   process.env.DATABASE_URL =

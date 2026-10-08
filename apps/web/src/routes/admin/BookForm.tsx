@@ -11,7 +11,7 @@ import { useAdminBook, useAuthors, useGenres } from "../../api/hooks";
 import { ErrorState, Field, Skeleton, Spinner } from "../../components/ui";
 import { useTitle } from "../../lib/useTitle";
 
-// The form edits the price in dollars; the API takes cents.
+// price is dollars in the form, cents in the api
 const formSchema = bookInputSchema.omit({ priceCents: true }).extend({
   price: z.coerce.number({ error: "Enter a price" }).min(0, "Price can't be negative").max(10_000),
   pages: z.preprocess(

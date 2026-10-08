@@ -15,10 +15,7 @@ import {
   reviewInputSchema,
 } from "@bookstore/shared";
 
-/**
- * OpenAPI document built from the same Zod schemas that validate requests, so the docs can't
- * drift from the implementation. Served as JSON at /api/openapi.json and as Swagger UI at /api/docs.
- */
+// Docs are generated from the same schemas the routes validate with.
 const registry = new OpenAPIRegistry();
 registry.registerComponent("securitySchemes", "cookieAuth", {
   type: "apiKey",

@@ -1,71 +1,43 @@
-# Deploying Folio
+# Deployment
 
-The live setup uses three free tiers:
+How the live site is set up. Everything runs on free tiers.
 
-| Piece    | Service | What it runs                                                     |
-| -------- | ------- | ---------------------------------------------------------------- |
-| Database | Neon    | PostgreSQL 16                                                    |
-| API      | Render  | `apps/api`, built with tsup; runs migrations on start            |
-| Web      | Vercel  | `apps/web` static build; `/api/*` is rewritten to the Render API |
+- Database: Neon (Postgres)
+- API: Render, using `render.yaml`
+- Web: Vercel, with `/api/*` rewritten to the Render service (`apps/web/vercel.json`)
 
-Expect about 20 minutes the first time.
+## Database
 
-## 1. Database (Neon)
+Create a Neon project and copy the connection string (it ends in `?sslmode=require`). Load the schema and demo data once:
 
-1. Create a project at [neon.tech](https://neon.tech) (region close to your Render region, e.g. US West / Oregon).
-2. Copy the connection string from **Connection details**. It looks like
-   `postgresql://user:password@ep-xxx.us-west-2.aws.neon.tech/neondb?sslmode=require`.
-3. Load the schema and demo data once from your machine:
+```bash
+DATABASE_URL='postgresql://...?sslmode=require' npm run db:reset
+```
 
-   ```bash
-   DATABASE_URL='postgresql://…?sslmode=require' npm run db:reset
-   ```
+## API
 
-## 2. API (Render)
+In Render, create a new Blueprint from this repo. It picks up `render.yaml`. Set `DATABASE_URL` when it asks; `JWT_SECRET` is generated. Migrations run on every start, so new ones get applied on deploy.
 
-1. In [Render](https://render.com): **New → Blueprint**, pick this repository. Render reads `render.yaml`.
-2. When prompted, set `DATABASE_URL` to the Neon connection string. `JWT_SECRET` is generated for you.
-3. Wait for the deploy, then open `https://<your-service>.onrender.com/api/health`. It should return `{"status":"ok"}`.
-   API docs are at `/api/docs`.
+Check `https://<service>.onrender.com/api/health` returns `{"status":"ok"}`.
 
-Note the service URL. If Render named the service differently from `bookstore-api`, update the
-`destination` in [`apps/web/vercel.json`](../apps/web/vercel.json) to match and commit the change.
+If the service isn't called `bookstore-api`, update the URL in `apps/web/vercel.json`.
 
-## 3. Web (Vercel)
+## Web
 
-1. In [Vercel](https://vercel.com): **Add New → Project**, import this repository.
-2. Set **Root Directory** to `apps/web`. Vercel detects Vite and the npm workspace, and the defaults (`npm run build`, output `dist`) are correct.
-3. Deploy, then open the `*.vercel.app` URL. Books should load and the demo login buttons should work.
+Import the repo in Vercel and set the root directory to `apps/web`. The defaults for Vite are fine.
 
-## 4. Custom domain
+For the custom domain, add `bookstore.rahulnainala.com` in the Vercel project and create a `CNAME bookstore -> cname.vercel-dns.com` record.
 
-1. In the Vercel project: **Settings → Domains → Add** `bookstore.rahulnainala.com`.
-2. At your DNS provider for `rahulnainala.com`, add the record Vercel shows. Usually that's
-   `CNAME  bookstore  cname.vercel-dns.com`.
-3. Vercel issues the HTTPS certificate automatically, usually within a few minutes.
+## Nightly reset
 
-## 5. Nightly demo reset (GitHub Actions)
+The `Reset demo data` workflow reseeds the database every night. To turn it on, add a `DEMO_DATABASE_URL` secret and a `DEMO_RESET_ENABLED=true` variable in the repo's Actions settings. You can also run it by hand from the Actions tab.
 
-In the GitHub repository settings:
+## Environment variables (API)
 
-1. **Secrets and variables → Actions → Secrets**: add `DEMO_DATABASE_URL` with the Neon connection string.
-2. **Secrets and variables → Actions → Variables**: add `DEMO_RESET_ENABLED` = `true`.
-3. Run **Actions → Reset demo data → Run workflow** once to check it works. After that it runs nightly at 03:17 UTC.
-
-## 6. After deploying
-
-- [ ] Click both demo buttons, place an order, and check that the admin dashboard updates.
-- [ ] Run [PageSpeed Insights](https://pagespeed.web.dev/) on the live URL.
-- [ ] Retake `docs/screenshots/*` against the live site so they show real book covers. The committed screenshots came from a sandbox that couldn't reach Open Library, so they show the generated fallback covers. Regenerate `apps/web/public/og-image.png` (1200×630) the same way.
-- [ ] Add the project card to rahulnainala.com/projects (see [showcase.md](showcase.md)).
-
-## Environment variables
-
-| Variable           | Where  | Purpose                                                                      |
-| ------------------ | ------ | ---------------------------------------------------------------------------- |
-| `DATABASE_URL`     | Render | Neon connection string                                                       |
-| `JWT_SECRET`       | Render | Signs session cookies (generated by the blueprint)                           |
-| `NODE_ENV`         | Render | `production`: secure cookies, required secret                                |
-| `TRUST_PROXY_HOPS` | Render | `2` (Vercel + Render), so rate limiting sees real client IPs                 |
-| `CORS_ORIGIN`      | Render | Only if the web app calls the API cross-origin (not needed with the rewrite) |
-| `VITE_API_URL`     | Vercel | Optional absolute API origin; leave unset to use the `/api` rewrite          |
+| Name               | Notes                                                              |
+| ------------------ | ------------------------------------------------------------------ |
+| `DATABASE_URL`     | Neon connection string                                             |
+| `JWT_SECRET`       | Signs the session cookie                                           |
+| `NODE_ENV`         | `production` turns on secure cookies                               |
+| `TRUST_PROXY_HOPS` | `2` in production (Vercel + Render) so rate limiting sees real IPs |
+| `CORS_ORIGIN`      | Only needed if the web app calls the API from another origin       |

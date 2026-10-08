@@ -1,6 +1,5 @@
 import { MAX_QTY_PER_ITEM, type BookSummary, type CartItem } from "@bookstore/shared";
 
-/** Cart kept in localStorage for visitors who haven't signed in. Pure helpers, easy to test. */
 export const GUEST_CART_KEY = "folio.cart";
 
 export function readGuestCart(): CartItem[] {
@@ -18,7 +17,7 @@ export function writeGuestCart(items: CartItem[]) {
     if (items.length) localStorage.setItem(GUEST_CART_KEY, JSON.stringify(items));
     else localStorage.removeItem(GUEST_CART_KEY);
   } catch {
-    // Storage can be unavailable (private mode); the cart then lives only in memory.
+    // private mode etc.
   }
 }
 

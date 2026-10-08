@@ -49,8 +49,7 @@ export default function Catalog() {
     limit: 24,
   });
 
-  // Build on the live URL rather than this render's params, so quick successive changes (e.g. a
-  // genre click immediately followed by a sort change) don't overwrite each other.
+  // read window.location, not `params` - params can be stale if two updates happen quickly
   function update(changes: Record<string, string | undefined>) {
     setParams(() => {
       const next = new URLSearchParams(window.location.search);

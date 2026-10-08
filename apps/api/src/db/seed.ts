@@ -13,7 +13,7 @@ import {
 } from "./seed-data";
 import { authors, bookGenres, books, genres, orderItems, orders, reviews, users } from "./schema";
 
-/** Small deterministic PRNG so every reset produces the same demo data. */
+// seeded PRNG so every reset gives the same data
 function rng(seed: number) {
   let s = seed >>> 0;
   return () => {
@@ -27,7 +27,6 @@ function rng(seed: number) {
 
 const coverUrl = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
 
-/** Wipe all data and load the starter catalog, demo accounts, reviews and order history. */
 export async function seed() {
   const random = rng(42);
   const pick = <T>(list: readonly T[]) => list[Math.floor(random() * list.length)]!;
@@ -37,7 +36,7 @@ export async function seed() {
       sql`truncate table order_items, orders, cart_items, reviews, book_genres, books, genres, authors, users restart identity cascade`,
     );
 
-    // Users: two demo accounts with public passwords, plus sample customers who can't sign in.
+    // sample customers get a random password, they're only there for reviews/orders
     const demoRows = await tx
       .insert(users)
       .values(
@@ -105,7 +104,6 @@ export async function seed() {
         ),
       );
 
-    // Reviews: most books get a handful, skewed positive like real storefronts.
     const reviewValues: (typeof reviews.$inferInsert)[] = [];
     for (const book of bookRows) {
       const reviewers = [...customerRows]
@@ -125,7 +123,7 @@ export async function seed() {
     }
     if (reviewValues.length) await tx.insert(reviews).values(reviewValues);
 
-    // Orders spread over the last 30 days so the admin dashboard chart has data.
+    // spread orders over the last 30 days so the dashboard chart isn't empty
     const buyers = [...customerRows, demoCustomer, demoCustomer];
     for (let i = 0; i < 48; i++) {
       const buyer = pick(buyers);

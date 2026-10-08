@@ -8,7 +8,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
-    // Same-origin API in development, mirroring the Vercel rewrite in production.
     proxy: { "/api": { target: API_TARGET, changeOrigin: true } },
   },
   preview: {

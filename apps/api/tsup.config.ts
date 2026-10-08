@@ -1,7 +1,6 @@
 import { defineConfig } from "tsup";
 
-// Bundle the server and the DB scripts. The workspace package @bookstore/shared ships as
-// TypeScript source, so it is inlined; real npm dependencies stay external.
+// shared is raw TS, so bundle it in
 export default defineConfig({
   entry: {
     index: "src/index.ts",

@@ -11,7 +11,6 @@ export type Agent = ReturnType<typeof request.agent>;
 let counter = 0;
 let testAuthorId: number | undefined;
 
-/** A cookie-keeping client signed in as a brand-new customer. */
 export async function newCustomer(): Promise<Agent> {
   const agent = request.agent(app);
   counter += 1;
@@ -32,7 +31,6 @@ export async function demo(role: "customer" | "admin"): Promise<Agent> {
   return agent;
 }
 
-/** Insert a throwaway book directly so stock-sensitive tests don't touch the seeded catalog. */
 export async function makeBook(overrides: Partial<typeof books.$inferInsert> = {}) {
   testAuthorId ??= (await db.insert(authors).values({ name: "Fixture Author" }).returning())[0]!.id;
   counter += 1;

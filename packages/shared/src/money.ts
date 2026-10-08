@@ -1,4 +1,3 @@
-/** Flat-rate shipping, free above the threshold. Used by both the API and the UI. */
 export const FREE_SHIPPING_THRESHOLD_CENTS = 3500;
 export const SHIPPING_FLAT_CENTS = 499;
 

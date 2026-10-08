@@ -1,4 +1,4 @@
-/** Seeded accounts behind the "Try as demo …" buttons. Passwords are public on purpose. */
+// passwords are public on purpose
 export const DEMO_ACCOUNTS = {
   customer: {
     name: "Demo Customer",

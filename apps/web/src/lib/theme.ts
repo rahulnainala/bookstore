@@ -9,7 +9,7 @@ export function useTheme() {
     try {
       localStorage.setItem(KEY, dark ? "dark" : "light");
     } catch {
-      // ignore unavailable storage
+      // storage blocked
     }
   }, [dark]);
   return { dark, toggle: () => setDark((d) => !d) };

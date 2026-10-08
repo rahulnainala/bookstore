@@ -94,7 +94,7 @@ catalogRouter.get("/books/:id/reviews", async (req, res) => {
   res.json({ items });
 });
 
-/** Create or replace the signed-in user's review of a book (one review per user per book). */
+// one review per user per book, posting again replaces it
 catalogRouter.put("/books/:id/reviews", requireAuth, async (req, res) => {
   const { id } = parse(idParam, req, "params");
   const input = parse(reviewInputSchema, req);

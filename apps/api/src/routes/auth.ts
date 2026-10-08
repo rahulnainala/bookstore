@@ -59,7 +59,6 @@ authRouter.post("/login", authLimiter, async (req, res) => {
   res.json({ user: toPublicUser(user) });
 });
 
-/** One-click sign-in as a seeded demo account, so visitors can try the store without signing up. */
 authRouter.post("/demo", authLimiter, async (req, res) => {
   const { role } = parse(demoLoginSchema, req);
   const email = DEMO_ACCOUNTS[role].email;

@@ -36,7 +36,7 @@ function SearchBox({ className }: { className?: string }) {
   const [q, setQ] = useState(urlQ);
   const id = useId();
 
-  // Keep the box in sync when the URL's query changes (back button, filter chips).
+  // sync with the url (back button, clearing filters)
   const [syncedQ, setSyncedQ] = useState(urlQ);
   if (urlQ !== syncedQ && location.pathname === "/books") {
     setSyncedQ(urlQ);
@@ -214,14 +214,14 @@ function Footer() {
         <div>
           <p className="font-serif text-lg font-bold">{APP_NAME}</p>
           <p className="muted mt-1 max-w-md">
-            A portfolio project by{" "}
+            Built by{" "}
             <a
               href={LINKS.portfolio}
               className="font-medium text-amber-700 hover:underline dark:text-amber-400"
             >
               Rahul Nainala
             </a>
-            . Demo store: no real payments are taken and data resets nightly.
+            . Nothing here is for sale, and the data resets every night.
           </p>
         </div>
         <nav aria-label="Project links" className="flex flex-wrap gap-x-5 gap-y-2">

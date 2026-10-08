@@ -18,7 +18,6 @@ import { ordersRouter } from "./routes/orders";
 
 export function createApp() {
   const app = express();
-  // Proxies sit in front of the API; trust them so req.ip (used for rate limiting) is the client.
   app.set("trust proxy", env.TRUST_PROXY_HOPS);
   app.disable("x-powered-by");
 
@@ -36,7 +35,7 @@ export function createApp() {
       },
     }),
   );
-  // The API only serves JSON; CSP is relaxed so Swagger UI's assets load.
+  // CSP off so swagger ui loads
   app.use(helmet({ contentSecurityPolicy: false }));
   if (env.CORS_ORIGIN) {
     const origin = env.CORS_ORIGIN;

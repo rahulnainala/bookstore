@@ -48,7 +48,6 @@ export async function api<T>(
   return data as T;
 }
 
-/** Build a query string, dropping empty values. */
 export function qs(params: Record<string, string | number | boolean | undefined | null>) {
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {

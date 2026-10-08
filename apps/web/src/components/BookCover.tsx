@@ -17,10 +17,7 @@ function hash(text: string) {
   return Math.abs(h);
 }
 
-/**
- * Book cover from Open Library, with a generated typographic cover as fallback. Open Library
- * returns a 1×1 placeholder for unknown ISBNs, so tiny images also count as missing.
- */
+// Open Library returns a 1x1 gif for unknown ISBNs, treat that as missing too
 export function BookCover({
   src,
   title,

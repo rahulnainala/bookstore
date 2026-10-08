@@ -1,4 +1,4 @@
-import { ArrowRight, Code2, Database, ShieldCheck, Truck } from "lucide-react";
+import { ArrowRight, Code2 } from "lucide-react";
 import { formatPrice, FREE_SHIPPING_THRESHOLD_CENTS } from "@bookstore/shared";
 import { Link } from "react-router";
 import { useBooks, useGenres } from "../api/hooks";
@@ -48,7 +48,7 @@ export default function Home() {
       <section className="grid items-center gap-10 py-6 md:grid-cols-2 md:py-12">
         <div>
           <p className="mb-3 text-sm font-semibold tracking-wider text-amber-700 uppercase dark:text-amber-400">
-            Independent bookstore · Demo
+            A demo bookstore
           </p>
           <h1 className="text-4xl leading-tight font-bold sm:text-5xl lg:text-6xl">
             Find your next <em className="text-amber-700 dark:text-amber-400">favourite</em> book.
@@ -117,41 +117,14 @@ export default function Home() {
         query={{ sort: "newest", limit: 6 }}
       />
 
-      <section className="mt-20 grid gap-4 sm:grid-cols-3">
-        {[
-          {
-            icon: Truck,
-            title: "Fast, tracked delivery",
-            body: "Every order ships with tracking. Watch the status move from paid to delivered.",
-          },
-          {
-            icon: ShieldCheck,
-            title: "Secure checkout",
-            body: "Stock is reserved in a single database transaction, so you'll never buy a book we don't have.",
-          },
-          {
-            icon: Database,
-            title: "Real reviews",
-            body: "Ratings come from readers. Sign in to leave your own.",
-          },
-        ].map(({ icon: Icon, title, body }) => (
-          <div key={title} className="card p-6">
-            <Icon className="size-6 text-amber-600" aria-hidden />
-            <h3 className="mt-3 font-sans font-semibold">{title}</h3>
-            <p className="muted mt-1 text-sm">{body}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="card mt-6 flex flex-col gap-4 bg-stone-900 p-8 text-stone-100 sm:flex-row sm:items-center sm:justify-between dark:bg-stone-900">
+      <section className="card mt-20 flex flex-col gap-4 bg-stone-900 p-8 text-stone-100 sm:flex-row sm:items-center sm:justify-between dark:bg-stone-900">
         <div>
           <h2 className="flex items-center gap-2 text-2xl font-bold">
-            <Code2 className="size-6 text-amber-400" aria-hidden /> About this project
+            <Code2 className="size-6 text-amber-400" aria-hidden /> About this site
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-stone-300">
-            Folio is a full-stack portfolio project: React, TanStack Query and Tailwind on the
-            front; Express, PostgreSQL and Drizzle ORM on the back, with shared Zod schemas,
-            cookie-based auth, transactional checkout, integration tests and an OpenAPI spec.
+            This isn't a real shop. It's a side project I built with React, Express and Postgres.
+            The code is on GitHub if you want to see how it works.
           </p>
         </div>
         <div className="flex shrink-0 gap-3">

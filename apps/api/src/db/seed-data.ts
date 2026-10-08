@@ -1,8 +1,4 @@
-/**
- * Starter catalog for the demo store. Covers are loaded from the Open Library covers API by ISBN;
- * the web app falls back to a generated cover when one is missing. Descriptions are original
- * one-line summaries written for this project.
- */
+// Starter catalog. Covers come from Open Library by ISBN.
 
 export const GENRES = [
   "Classics",

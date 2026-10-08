@@ -33,7 +33,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signedIn = useCallback(
     (user: User) => {
       queryClient.setQueryData(keys.me, user);
-      // Anything user-specific (cart, orders, admin data) must be refetched for the new session.
       queryClient.removeQueries({ queryKey: keys.cart });
       queryClient.removeQueries({ queryKey: ["orders"] });
       queryClient.removeQueries({ queryKey: ["admin"] });

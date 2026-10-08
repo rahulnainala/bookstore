@@ -25,14 +25,13 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 30_000,
       refetchOnWindowFocus: false,
-      // Don't retry client errors (404, 401…); retry network hiccups and cold starts.
+      // no point retrying 4xx
       retry: (count, err) =>
         !(err instanceof ApiError && err.status >= 400 && err.status < 500) && count < 2,
     },
   },
 });
 
-// The admin area (and its charting library) is loaded only when an admin opens it.
 const lazyDefault = (load: () => Promise<{ default: React.ComponentType }>) => async () => ({
   Component: (await load()).default,
 });

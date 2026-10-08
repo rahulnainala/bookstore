@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// End-to-end tests run against their own database, reset before the servers start.
 const DATABASE_URL =
   process.env.E2E_DATABASE_URL ?? "postgres://postgres:postgres@localhost:5432/bookstore_e2e";
 const API_PORT = 8100;

@@ -39,10 +39,7 @@ export function toPublicUser(row: typeof users.$inferSelect): User {
   return { id: row.id, name: row.name, email: row.email, role: row.role, isDemo: row.isDemo };
 }
 
-/**
- * Resolve the session cookie to a user on every request. The user is re-read from the database
- * so role changes and the nightly demo reset take effect immediately.
- */
+// Looks the user up on every request so a deleted user / db reset logs them out.
 export const loadUser: RequestHandler = async (req, res, next) => {
   const token = req.cookies?.[SESSION_COOKIE];
   if (!token) return next();
@@ -70,7 +67,6 @@ export const requireAdmin: RequestHandler = (req, _res, next) => {
   next();
 };
 
-/** Narrow `req.user` after requireAuth has run. */
 export function currentUser(req: { user?: User }): User {
   if (!req.user) throw unauthorized();
   return req.user;

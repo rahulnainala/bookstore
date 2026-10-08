@@ -29,7 +29,6 @@ import { notFound } from "../lib/errors";
 type BookQuery = z.output<typeof bookQuerySchema>;
 type BookInput = z.output<typeof bookInputSchema>;
 
-/** Per-book rating aggregate, joined into every catalog query. */
 const ratings = db
   .select({
     bookId: reviews.bookId,
@@ -213,7 +212,6 @@ export async function getBook(where: SQL): Promise<BookDetail> {
 export const getBookBySlug = (slug: string) => getBook(eq(books.slug, slug));
 export const getBookById = (id: number) => getBook(eq(books.id, id));
 
-/** Books sharing a genre with the given one, best rated first. */
 export async function relatedBooks(bookId: number, limit = 6): Promise<BookSummary[]> {
   const rows = await baseQuery()
     .where(

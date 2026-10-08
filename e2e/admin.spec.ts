@@ -8,7 +8,6 @@ test("demo admin sees the dashboard and manages a book end to end", async ({ pag
   await expect(page.getByText("Total revenue")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Revenue, last 30 days" })).toBeVisible();
 
-  // Create a book.
   await page.getByRole("link", { name: "Books", exact: true }).click();
   await page.getByRole("link", { name: "New book" }).click();
   await page.getByLabel("Title").fill("Playwright in Action");
@@ -19,19 +18,16 @@ test("demo admin sees the dashboard and manages a book end to end", async ({ pag
   await page.getByText("Science Fiction", { exact: true }).click();
   await page.getByRole("button", { name: "Create book" }).click();
 
-  // Lands on the new book's public page.
   await expect(page.getByRole("heading", { level: 1, name: "Playwright in Action" })).toBeVisible();
   await expect(page.getByText("$24.50")).toBeVisible();
   await expect(page.getByText("Only 3 left")).toBeVisible();
 
-  // Delete it again from the admin table.
   await page.goto("/admin/books");
   await page.getByLabel("Filter books").fill("Playwright");
   page.once("dialog", (d) => d.accept());
   await page.getByRole("button", { name: "Delete Playwright in Action" }).click();
   await expect(page.getByText("Deleted “Playwright in Action”")).toBeVisible();
 
-  // The seeded catalog is protected from the shared demo admin.
   await page.getByLabel("Filter books").fill("Dune");
   page.once("dialog", (d) => d.accept());
   await page.getByRole("button", { name: "Delete Dune" }).click();

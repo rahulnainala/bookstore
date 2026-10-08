@@ -22,7 +22,6 @@ export async function getCart(userId: number): Promise<Cart> {
   };
 }
 
-/** Set the quantity for one book. Quantity is capped by stock so the cart never promises too much. */
 export async function setCartItem(userId: number, bookId: number, quantity: number) {
   const book = await db.query.books.findFirst({
     where: eq(books.id, bookId),
@@ -43,10 +42,7 @@ export async function removeCartItem(userId: number, bookId: number) {
   return getCart(userId);
 }
 
-/**
- * Merge a guest (localStorage) cart into the signed-in user's cart. Quantities add up, capped by
- * stock and the per-item limit; unknown or sold-out books are dropped silently.
- */
+// guest cart -> account cart. Unknown or sold out books are just dropped.
 export async function mergeCart(userId: number, input: CartMergeInput) {
   const wanted = new Map<number, number>();
   for (const { bookId, quantity } of input.items) {

@@ -21,8 +21,6 @@ import { pageQuery } from "./orders";
 export const adminRouter = Router();
 adminRouter.use(requireAdmin);
 
-// ---------- Dashboard ----------
-
 adminRouter.get("/stats", async (_req, res) => {
   const notCancelled = ne(orders.status, "CANCELLED");
 
@@ -82,8 +80,6 @@ adminRouter.get("/stats", async (_req, res) => {
   res.json(stats);
 });
 
-// ---------- Books ----------
-
 adminRouter.get("/books/:id", async (req, res) => {
   const { id } = parse(idParam, req, "params");
   const book = await getBookById(id);
@@ -107,7 +103,7 @@ adminRouter.delete("/books/:id", async (req, res) => {
     columns: { seeded: true },
   });
   if (!book) throw notFound("Book");
-  // Keep the public demo usable: the shared demo admin can only delete books it added itself.
+  // don't let the shared demo admin empty the store
   if (book.seeded && currentUser(req).isDemo) {
     throw forbidden(
       "The demo admin can't delete the starter catalog. Try deleting a book you added.",
@@ -116,8 +112,6 @@ adminRouter.delete("/books/:id", async (req, res) => {
   await db.delete(books).where(eq(books.id, id));
   res.status(204).end();
 });
-
-// ---------- Authors ----------
 
 adminRouter.post("/authors", async (req, res) => {
   const [author] = await db.insert(authors).values(parse(authorInputSchema, req)).returning();
@@ -150,8 +144,6 @@ adminRouter.delete("/authors/:id", async (req, res) => {
   res.status(204).end();
 });
 
-// ---------- Genres ----------
-
 adminRouter.post("/genres", async (req, res) => {
   const { name } = parse(genreInputSchema, req);
   const [genre] = await db
@@ -167,8 +159,6 @@ adminRouter.delete("/genres/:id", async (req, res) => {
   if (!deleted) throw notFound("Genre");
   res.status(204).end();
 });
-
-// ---------- Orders ----------
 
 adminRouter.get("/orders", async (req, res) => {
   const { page, limit } = parse(pageQuery, req, "query");

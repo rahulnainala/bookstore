@@ -2,10 +2,7 @@ import { Info, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../lib/auth";
 
-/**
- * The free API host sleeps when idle and takes ~30–60s to wake. Ping the health endpoint on load
- * and explain the delay if it's slow, instead of leaving visitors staring at skeletons.
- */
+// Render free tier sleeps, first request can take ~a minute
 export function ServerWakeBanner() {
   const [state, setState] = useState<"checking" | "slow" | "ready">("checking");
 
@@ -24,7 +21,7 @@ export function ServerWakeBanner() {
             return;
           }
         } catch {
-          // still waking up
+          // not up yet
         }
         await new Promise((r) => setTimeout(r, 3000));
       }
@@ -44,8 +41,8 @@ export function ServerWakeBanner() {
     >
       <div className="container-page flex items-center gap-2 py-2 text-sm">
         <LoaderCircle className="size-4 shrink-0 animate-spin" aria-hidden />
-        Waking up the demo server. Free hosting sleeps when idle, so the first load can take up to a
-        minute.
+        Waking up the server. It's on a free plan that sleeps when nobody's using it, so this can
+        take up to a minute.
       </div>
     </div>
   );

@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-// ---------- Common ----------
-
 export const idParam = z.object({ id: z.coerce.number().int().positive() });
 
 export const ROLES = ["CUSTOMER", "ADMIN"] as const;
@@ -9,8 +7,6 @@ export type Role = (typeof ROLES)[number];
 
 export const ORDER_STATUSES = ["PENDING", "PAID", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
-
-// ---------- Auth ----------
 
 export const registerSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(80),
@@ -29,8 +25,6 @@ export const demoLoginSchema = z.object({
   role: z.enum(["customer", "admin"]),
 });
 export type DemoLoginInput = z.infer<typeof demoLoginSchema>;
-
-// ---------- Catalog ----------
 
 export const BOOK_SORTS = [
   "featured",
@@ -56,7 +50,6 @@ export const bookQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(48).default(12),
 });
-/** Query params accepted by GET /books, as the client sends them. */
 export interface BookQuery {
   q?: string;
   genre?: string;
@@ -104,15 +97,11 @@ export const genreInputSchema = z.object({
 });
 export type GenreInput = z.input<typeof genreInputSchema>;
 
-// ---------- Reviews ----------
-
 export const reviewInputSchema = z.object({
   rating: z.coerce.number().int().min(1).max(5),
   body: z.string().trim().max(2000).default(""),
 });
 export type ReviewInput = z.input<typeof reviewInputSchema>;
-
-// ---------- Cart & orders ----------
 
 export const MAX_QTY_PER_ITEM = 10;
 

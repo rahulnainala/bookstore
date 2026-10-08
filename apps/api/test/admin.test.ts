@@ -57,7 +57,6 @@ describe("admin catalog management", () => {
     expect(updated.body.book.slug).toBe("the-test-driven-novel-2nd-ed");
     expect(updated.body.book.genres).toHaveLength(0);
 
-    // The demo admin can delete books it created...
     await admin.delete(`/api/v1/admin/books/${book.id}`).expect(204);
     await request(app).get(`/api/v1/books/${updated.body.book.slug}`).expect(404);
   });

@@ -16,12 +16,11 @@ import { Field, Spinner } from "../components/ui";
 import { useAuth } from "../lib/auth";
 import { useTitle } from "../lib/useTitle";
 
-/** Only allow same-site relative redirects after sign-in. */
+// only allow relative redirects
 function safeNext(next: string | null) {
   return next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
 }
 
-/** Where to go once signed in: the requested page, or the dashboard for admins with no target. */
 function destination(user: User, next: string) {
   return next === "/" && user.role === "ADMIN" ? "/admin" : next;
 }
@@ -35,8 +34,7 @@ function applyServerErrors<T extends FieldValues>(form: UseFormReturn<T>, err: u
   toast.error(err instanceof ApiError ? err.message : "Something went wrong");
 }
 
-// Navigation after sign-in happens in one place: the <Navigate> in Login/Register, which renders
-// as soon as the user is set. Handlers only sign in.
+// redirect happens via <Navigate> in Login/Register once user is set
 function DemoButtons() {
   const { demoLogin } = useAuth();
   const [pending, setPending] = useState<"customer" | "admin" | null>(null);

@@ -1,5 +1,4 @@
-# Render Blueprint for the API. In Render: New > Blueprint, pick this repo.
-# DATABASE_URL is the Neon connection string (with ?sslmode=require).
+# Render blueprint for the API. See docs/deployment.md
 services:
   - type: web
     name: bookstore-api
@@ -7,7 +6,7 @@ services:
     plan: free
     region: oregon
     buildCommand: npm ci --include=dev && npm run build -w @bookstore/api
-    # Free instances have no pre-deploy hook, so pending migrations run on start (they are idempotent).
+    # free plan has no pre-deploy step, so migrate on start
     startCommand: npm run db:migrate:prod -w @bookstore/api && npm start -w @bookstore/api
     healthCheckPath: /api/health
     autoDeploy: true

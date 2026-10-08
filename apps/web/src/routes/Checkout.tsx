@@ -136,9 +136,9 @@ export default function Checkout() {
               <CreditCard className="size-5" aria-hidden /> Payment
             </h2>
             <div className="mt-4 rounded-lg border border-dashed border-amber-400 bg-amber-50 p-4 text-sm text-amber-950 dark:bg-amber-400/10 dark:text-amber-200">
-              <p className="font-medium">Test mode: no real payment is taken.</p>
+              <p className="font-medium">No real payment here.</p>
               <p className="mt-1">
-                This is a portfolio demo. Your order is recorded as paid straight away.
+                This is a demo, so the order is just marked as paid. Don't enter real card details.
               </p>
             </div>
             <div className="mt-4 grid gap-3 opacity-60 sm:grid-cols-3" aria-hidden>

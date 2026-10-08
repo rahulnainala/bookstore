@@ -62,11 +62,6 @@ function toOrder(row: OrderRow, items: Order["items"]): Order {
   };
 }
 
-/**
- * Turn the user's cart into an order in a single transaction:
- * lock the books (in id order, to avoid deadlocks), verify stock, snapshot prices,
- * decrement stock and empty the cart. Either all of it happens or none of it does.
- */
 export async function checkout(userId: number, input: CheckoutInput): Promise<Order> {
   const orderId = await db.transaction(async (tx) => {
     const lines = await tx
@@ -81,7 +76,7 @@ export async function checkout(userId: number, input: CheckoutInput): Promise<Or
       .innerJoin(books, eq(cartItems.bookId, books.id))
       .where(eq(cartItems.userId, userId))
       .orderBy(asc(books.id))
-      .for("update", { of: books });
+      .for("update", { of: books }); // lock in id order to avoid deadlocks
 
     if (lines.length === 0) throw badRequest("Your cart is empty", "CART_EMPTY");
 
@@ -104,7 +99,7 @@ export async function checkout(userId: number, input: CheckoutInput): Promise<Or
       .insert(orders)
       .values({
         userId,
-        // Payment is simulated in this demo, so orders are marked paid straight away.
+        // no real payments, so straight to paid
         status: "PAID",
         subtotalCents,
         shippingCents,
@@ -182,9 +177,7 @@ export async function listOrders(opts: {
   };
 }
 
-/**
- * Update an order's status. Cancelling returns the items to stock; cancelled orders are final.
- */
+// cancelling puts the books back in stock
 export async function updateOrderStatus(id: number, status: OrderStatus): Promise<Order> {
   await db.transaction(async (tx) => {
     const [row] = await tx.select().from(orders).where(eq(orders.id, id)).for("update");

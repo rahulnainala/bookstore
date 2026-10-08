@@ -6,31 +6,26 @@ test("guest finds a book, signs in with the demo account at checkout and places 
   await page.goto("/");
   await expect(page.getByRole("heading", { name: /find your next/i })).toBeVisible();
 
-  // Search from the header.
   await page.getByRole("searchbox", { name: "Search books" }).fill("hobbit");
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/books\?q=hobbit/);
   await expect(page.getByRole("heading", { name: "Results for “hobbit”" })).toBeVisible();
 
-  // Open the book and add two copies to the (guest) cart.
   await page.getByRole("link", { name: "The Hobbit", exact: true }).first().click();
   await expect(page.getByRole("heading", { level: 1, name: "The Hobbit" })).toBeVisible();
   await page.getByRole("button", { name: "Increase quantity" }).click();
   await page.getByRole("button", { name: "Add to cart" }).click();
   await expect(page.getByRole("link", { name: "Cart, 2 items" })).toBeVisible();
 
-  // Cart persists for guests; checkout asks them to sign in.
   await page.getByRole("link", { name: "Cart, 2 items" }).click();
   await expect(page.getByText("$29.98").first()).toBeVisible();
   await page.getByRole("link", { name: "Sign in to checkout" }).click();
   await expect(page).toHaveURL(/\/login\?next=%2Fcheckout/);
 
-  // Demo sign-in merges the guest cart into the account and returns to checkout.
   await page.getByRole("button", { name: "Try as demo customer" }).click();
   await expect(page.getByRole("heading", { name: "Checkout" })).toBeVisible();
   await expect(page.getByText("2 × The Hobbit")).toBeVisible();
 
-  // Validation, then a valid address.
   await page.getByLabel("Full name").fill("");
   await page.getByRole("button", { name: "Place order" }).click();
   await expect(page.getByText("Full name is required")).toBeVisible();
@@ -42,7 +37,6 @@ test("guest finds a book, signs in with the demo account at checkout and places 
   const orderTitle = await orderHeading.textContent();
   await expect(page.getByRole("link", { name: "Cart, 0 items" })).toBeVisible();
 
-  // Order history lists it.
   await page.getByRole("link", { name: "All orders" }).click();
   await expect(
     page.getByRole("link", { name: new RegExp(orderTitle!.replace("#", "#")) }),

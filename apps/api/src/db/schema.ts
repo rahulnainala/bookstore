@@ -60,7 +60,7 @@ export const books = pgTable(
     publishedDate: date("published_date", { mode: "string" }),
     pages: integer("pages"),
     featured: boolean("featured").notNull().default(false),
-    /** Rows from the seed file; the demo admin may edit but not delete them. */
+    // true for the starter catalog (demo admin can't delete these)
     seeded: boolean("seeded").notNull().default(false),
     authorId: integer("author_id")
       .notNull()
@@ -159,7 +159,7 @@ export const orderItems = pgTable(
     orderId: integer("order_id")
       .notNull()
       .references(() => orders.id, { onDelete: "cascade" }),
-    // Kept nullable so a book can be removed from the catalog without erasing order history.
+    // nullable so deleting a book doesn't delete order history
     bookId: integer("book_id").references(() => books.id, { onDelete: "set null" }),
     title: text("title").notNull(),
     unitPriceCents: integer("unit_price_cents").notNull(),

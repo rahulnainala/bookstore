@@ -37,7 +37,6 @@ export const notFoundHandler: RequestHandler = (req, _res, next) => {
   next(new HttpError(404, "NOT_FOUND", `Route ${req.method} ${req.path} not found`));
 };
 
-// Postgres error codes we translate into client errors rather than 500s.
 const PG_UNIQUE_VIOLATION = "23505";
 const PG_FK_VIOLATION = "23503";
 
