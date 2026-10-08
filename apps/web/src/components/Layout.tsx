@@ -252,7 +252,7 @@ export function Layout() {
       <ServerWakeBanner />
       <Header />
       <DemoBanner />
-      <main id="main" className="container-page flex-1 py-8">
+      <main id="main" className="container-page min-w-0 flex-1 py-8">
         <Outlet />
       </main>
       <Footer />

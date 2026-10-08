@@ -67,20 +67,20 @@ export default function Home() {
           </div>
         </div>
         <div
-          className="relative mx-auto flex h-72 w-full max-w-md items-end justify-center sm:h-80"
+          className="relative mx-auto flex h-64 w-full max-w-md items-end justify-center overflow-hidden py-4 sm:h-80"
           aria-hidden
         >
           {hero.isLoading || !hero.data
-            ? [0, 1, 2].map((i) => <Skeleton key={i} className="mx-2 h-64 w-40" />)
+            ? [0, 1, 2].map((i) => <Skeleton key={i} className="mx-2 h-48 w-28 sm:h-64 sm:w-40" />)
             : hero.data.items.map((b, i) => (
                 <div
                   key={b.id}
                   className={
                     i === 1
-                      ? "z-10 w-44 sm:w-48"
+                      ? "z-10 w-32 sm:w-48"
                       : i === 0
-                        ? "w-36 translate-x-6 -rotate-6 sm:w-40"
-                        : "w-36 -translate-x-6 rotate-6 sm:w-40"
+                        ? "w-26 translate-x-5 -rotate-6 sm:w-40 sm:translate-x-6"
+                        : "w-26 -translate-x-5 rotate-6 sm:w-40 sm:-translate-x-6"
                   }
                 >
                   <BookCover
