@@ -18,8 +18,8 @@ import { ordersRouter } from "./routes/orders";
 
 export function createApp() {
   const app = express();
-  // Render and Vercel sit in front of the API; trust one proxy hop for req.ip / rate limiting.
-  app.set("trust proxy", 1);
+  // Proxies sit in front of the API; trust them so req.ip (used for rate limiting) is the client.
+  app.set("trust proxy", env.TRUST_PROXY_HOPS);
   app.disable("x-powered-by");
 
   app.use(

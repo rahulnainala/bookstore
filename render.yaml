@@ -1,0 +1,30 @@
+# Render Blueprint for the API. In Render: New > Blueprint, pick this repo.
+# DATABASE_URL is the Neon connection string (with ?sslmode=require).
+services:
+  - type: web
+    name: bookstore-api
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm ci --include=dev && npm run build -w @bookstore/api
+    # Free instances have no pre-deploy hook, so pending migrations run on start (they are idempotent).
+    startCommand: npm run db:migrate:prod -w @bookstore/api && npm start -w @bookstore/api
+    healthCheckPath: /api/health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - apps/api/**
+        - packages/shared/**
+        - package-lock.json
+        - render.yaml
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TRUST_PROXY_HOPS
+        value: "2"
