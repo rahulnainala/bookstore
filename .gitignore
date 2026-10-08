@@ -1,2 +1,17 @@
-/backend/node_modules
-/frontend/node_modules
+node_modules
+dist
+coverage
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.tsbuildinfo
+
+# Playwright
+/e2e/test-results
+/e2e/playwright-report
+/e2e/.auth
