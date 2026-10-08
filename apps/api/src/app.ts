@@ -22,7 +22,20 @@ export function createApp() {
   app.set("trust proxy", 1);
   app.disable("x-powered-by");
 
-  app.use(pinoHttp({ logger, autoLogging: env.NODE_ENV !== "test" }));
+  app.use(
+    pinoHttp({
+      logger,
+      autoLogging: env.NODE_ENV !== "test",
+      serializers: {
+        req: (req: { id: unknown; method: string; url: string }) => ({
+          id: req.id,
+          method: req.method,
+          url: req.url,
+        }),
+        res: (res: { statusCode: number }) => ({ statusCode: res.statusCode }),
+      },
+    }),
+  );
   // The API only serves JSON; CSP is relaxed so Swagger UI's assets load.
   app.use(helmet({ contentSecurityPolicy: false }));
   if (env.CORS_ORIGIN) {
