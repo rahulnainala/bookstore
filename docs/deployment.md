@@ -8,11 +8,14 @@ How the live site is set up. Everything runs on free tiers.
 
 ## Database
 
-Create a Neon project and copy the connection string (it ends in `?sslmode=require`). Load the schema and demo data once:
+Create a Neon project and copy the connection string (it ends in `?sslmode=require`).
 
-```bash
-DATABASE_URL='postgresql://...?sslmode=require' npm run db:reset
-```
+To create the tables and load the demo data, use the `Reset demo data` GitHub Action rather than running anything locally:
+
+1. In the repo's Settings -> Secrets and variables -> Actions, add a secret `DEMO_DATABASE_URL` with the Neon string, and a variable `DEMO_RESET_ENABLED` set to `true`.
+2. Go to Actions -> Reset demo data -> Run workflow.
+
+The same workflow then runs every night to reset the demo. (Locally, `DATABASE_URL=... npm run db:reset` does the same thing.)
 
 ## API
 
@@ -30,7 +33,7 @@ For the custom domain, add `bookstore.rahulnainala.com` in the Vercel project an
 
 ## Nightly reset
 
-The `Reset demo data` workflow reseeds the database every night. To turn it on, add a `DEMO_DATABASE_URL` secret and a `DEMO_RESET_ENABLED=true` variable in the repo's Actions settings. You can also run it by hand from the Actions tab.
+Already set up by the database step. It runs at 03:17 UTC; you can also run it by hand from the Actions tab.
 
 ## Environment variables (API)
 
