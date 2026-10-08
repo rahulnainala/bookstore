@@ -4,7 +4,7 @@ How the live site is set up. Everything runs on free tiers.
 
 - Database: Neon (Postgres)
 - API: Render, using `render.yaml`
-- Web: Vercel, with `/api/*` rewritten to the Render service (`apps/web/vercel.json`)
+- Web: Vercel, with `/api/*` rewritten to the Render service (`vercel.json` in the repo root)
 
 ## Database
 
@@ -23,11 +23,11 @@ In Render, create a new Blueprint from this repo. It picks up `render.yaml`. Set
 
 Check `https://<service>.onrender.com/api/health` returns `{"status":"ok"}`.
 
-If the service isn't called `bookstore-api`, update the URL in `apps/web/vercel.json`.
+If the service isn't called `bookstore-api`, update the URL in `vercel.json`.
 
 ## Web
 
-Import the repo in Vercel and set the root directory to `apps/web`. The defaults for Vite are fine.
+Import the repo in Vercel and keep the default root directory. `vercel.json` in the repo root sets the install and build commands and the output folder.
 
 For the custom domain, add `bookstore.rahulnainala.com` in the Vercel project and create a `CNAME bookstore -> cname.vercel-dns.com` record.
 

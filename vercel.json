@@ -1,5 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build -w @bookstore/web",
+  "outputDirectory": "apps/web/dist",
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://bookstore-api.onrender.com/api/:path*" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }
