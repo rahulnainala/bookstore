@@ -56,7 +56,18 @@ export const bookQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(48).default(12),
 });
-export type BookQuery = z.input<typeof bookQuerySchema>;
+/** Query params accepted by GET /books, as the client sends them. */
+export interface BookQuery {
+  q?: string;
+  genre?: string;
+  author?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  inStock?: "true" | "false";
+  sort?: BookSort;
+  page?: number;
+  limit?: number;
+}
 
 const isbn13 = z
   .string()

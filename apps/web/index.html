@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Folio — an online bookstore demo</title>
+    <meta
+      name="description"
+      content="Folio is a full-stack online bookstore built with React, Express and PostgreSQL: search, cart, checkout, reviews and an admin dashboard."
+    />
+    <meta name="theme-color" content="#1c1917" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Folio — an online bookstore demo" />
+    <meta
+      property="og:description"
+      content="Full-stack React + Express + PostgreSQL bookstore with transactional checkout and an admin dashboard. Try it with a one-click demo login."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://covers.openlibrary.org" />
+    <script>
+      // Apply the saved or system theme before first paint to avoid a flash.
+      try {
+        const saved = localStorage.getItem("folio.theme");
+        const dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Folio needs JavaScript to run.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
