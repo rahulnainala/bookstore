@@ -9,6 +9,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1).default("postgres://postgres:postgres@localhost:5432/bookstore"),
   JWT_SECRET: z.string().min(32).default("dev-only-secret-change-me-dev-only-secret"),
   CORS_ORIGIN: z.string().optional(),
+  // Proxy hops in front of the API (Vercel rewrite + Render load balancer = 2), for client IPs.
+  TRUST_PROXY_HOPS: z.coerce.number().int().min(0).default(1),
 });
 
 const parsed = envSchema.safeParse(process.env);
