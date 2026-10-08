@@ -1,0 +1,39 @@
+{
+  "name": "bookstore",
+  "private": true,
+  "description": "Full-stack online bookstore: React + Express + PostgreSQL",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,magenta \"npm run dev -w @bookstore/api\" \"npm run dev -w @bookstore/web\"",
+    "build": "npm run build -w @bookstore/api && npm run build -w @bookstore/web",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:generate": "npm run db:generate -w @bookstore/api",
+    "db:migrate": "npm run db:migrate -w @bookstore/api",
+    "db:seed": "npm run db:seed -w @bookstore/api",
+    "db:reset": "npm run db:reset -w @bookstore/api",
+    "e2e": "playwright test -c e2e/playwright.config.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "1.56.1",
+    "concurrently": "^9.2.1",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.44.0"
+  },
+  "type": "module"
+}
